@@ -2,13 +2,13 @@ import {
     RecheiosBordaDisponíveis, 
     SaboresDisponíveis, 
     TamanhosDisponiveis, 
-} from '../MockDatabase/data';
+} from '../MockBackend/data';
 import {
     Tamanho,
     Sabor,
     RecheioBorda,
     Pizza
-} from '../MockDatabase/models';
+} from '../MockBackend/models';
 
 const getTamanhosDisponiveis = (): Tamanho[]  => {
     // Fake database access ...

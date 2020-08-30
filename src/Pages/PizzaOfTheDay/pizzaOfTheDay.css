@@ -1,0 +1,56 @@
+.bg-img-day {
+    background-image: url('../../static/images/pizza_of_the_day.jpg');
+
+    /* Add the blur effect */
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
+  
+    /* Full height */
+    height: 100%;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bg-text-day {
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+    color: white;
+    font-weight: bold;
+    border: 3px solid #f1f1f1;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+}
+
+.list-container {
+    display: flex;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 10px;;
+    align-items: center;
+    justify-content: center;
+}
+
+#btnOrder {
+    color: rgba(255, 0, 0, 0.7);
+    border-color: rgba(255, 0, 0, 0.7);
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+}
+
+.subtitle {
+    font-weight: 300;
+    margin-top: 5px;
+}
+
+p {
+    color: #d8d8d8!important;
+}

@@ -6,8 +6,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import database from '../../Repository/PizzaRepository'
-import { Tamanho } from '../../MockDatabase/models';
+import { Tamanho } from '../../MockBackend/models';
 import Divider from '@material-ui/core/Divider';
+import { IProps } from '../../App';
+import { Link } from 'react-router-dom';
+
 import './selecionarTamanho.css';
 
 const useStyles = makeStyles({
@@ -17,8 +20,11 @@ const useStyles = makeStyles({
     }
 });  
 
-function SelecionarTamanho() {
+var props: IProps;
+
+function SelecionarTamanho(_props: IProps) {
     const classes = useStyles();
+    props = _props;
     return (
         <div className={classes.outerDiv}>
             <div className="bg-img-tamanho"></div>
@@ -38,22 +44,36 @@ function SelecionarTamanho() {
     );
 }
 
+const setTamanho = (tamanho: Tamanho) => {
+    let pizza = props.currentPizza;
+    if(pizza) {
+        pizza.tamanho = tamanho;
+    } else {
+        pizza = {
+            tamanho: tamanho,
+            sabor: undefined,
+            borda: undefined
+        }
+    }
+    props.setCurrentPizza(pizza);
+}
+
 const getPizzaSizes = () => {
     return database.tamanhos().map(tamanho => {
-        console.log(tamanho);
-        return (
-            <>
-                <ListItem button>
+        return (<>
+            <Link to="/massa">
+                <ListItem onClick={() => setTamanho(tamanho)} button>
                     <ListItemText primary={Tamanho[tamanho]} />
                     <ListItemIcon>
                         <ArrowForward />
                     </ListItemIcon>
                 </ListItem>
-                <Divider />
-            </>
+            </Link>
+            <Divider />
+        </>
         )
     });
-}
+};
 
 export default SelecionarTamanho;
 

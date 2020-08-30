@@ -21,11 +21,26 @@
     background-size: cover;
 }
 
+#btnOrder {
+    color: white;
+    border-color: rgb(255, 255, 255);
+}
+
 .list-container {
     display: flex;
     margin: 50px;
     align-items: center;
     justify-content: center;
+}
+
+.list-dois-sabores {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.container-dois-sabores {
+    display: flex;
+    flex-direction: row;
 }
 
 .MuiDivider-root {

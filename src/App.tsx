@@ -2,34 +2,46 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
-import logo from './logo.svg';
 import './App.scss';
+import { Pizza } from './MockBackend/models';
 
 // Page imports
 import Home from './Pages/Home/Home';
 import SelecionarTamanho from './Pages/SelecionarTamanho/SelecionarTamanho';
 import SelecionarMassa from './Pages/SelecionarMassa/SelecionarMassa';
 import SelecionarSabor from './Pages/SelecionarSabor/SelecionarSabor';
+import PizzaOfTheDay from './Pages/PizzaOfTheDay/PizzaOfTheDay';
+import Confirmation from './Pages/Confirmation/Confirmation';
+import { useState } from 'react';
 
-
+export interface IProps {
+  currentPizza?: Pizza,
+  setCurrentPizza: React.Dispatch<React.SetStateAction<Pizza|undefined>>
+}
 
 function App() {
+  const [ currentPizza, setCurrentPizza ] = useState<Pizza|undefined>(undefined);
   return (
     <div>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
       <Router>
         <Switch>
             <Route path="/tamanho">
-              <SelecionarTamanho />
+              <SelecionarTamanho currentPizza={currentPizza} setCurrentPizza={setCurrentPizza} />
             </Route>
             <Route path="/sabor">
-              <SelecionarSabor />
+              <SelecionarSabor currentPizza={currentPizza} setCurrentPizza={setCurrentPizza} />
             </Route>
             <Route path="/massa">
-              <SelecionarMassa />
+              <SelecionarMassa currentPizza={currentPizza} setCurrentPizza={setCurrentPizza} />
+            </Route>
+            <Route path='/pizza-of-the-day'>
+              <PizzaOfTheDay currentPizza={currentPizza} setCurrentPizza={setCurrentPizza} />
+            </Route>
+            <Route path="/confirmation">
+              <Confirmation currentPizza={currentPizza} setCurrentPizza={setCurrentPizza} />
             </Route>
             <Route path="/">
               <Home />
@@ -37,25 +49,6 @@ function App() {
           </Switch>
       </Router>
     </div>
-
-    /*
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-    */
   );
 }
 
