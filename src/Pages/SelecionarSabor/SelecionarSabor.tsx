@@ -11,13 +11,6 @@ import Divider from '@material-ui/core/Divider';
 import './selecionarSabor.css';
 import { IProps } from '../../App';
 import { Link } from 'react-router-dom';
-import { SaborPizza } from '../../MockBackend/models';
-import Switch from '@material-ui/core/Switch';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
     outerDiv: {
@@ -28,12 +21,8 @@ const useStyles = makeStyles({
 var props: IProps;
 
 function SelecionarSabor(_props: IProps) {
-    const [state, setState] = React.useState({
-        checked: false,
-        primeiroSabor: null,
-        segundoSabor: null
-    });
-
+    const [state, setState] = React.useState(null);
+    getSabores(state, setState);
     const classes = useStyles();
     props = _props;
     return (
@@ -44,22 +33,12 @@ function SelecionarSabor(_props: IProps) {
                 <p className="subtitle">Todos nossos ingredientes são de altíssima qualidade, então não se preocupe, não tem como errar.</p>
                 <br/>
                 <p>Esses são os recheios que temos disponíveis:</p>
-
-                <Switch
-                    checked={state.checked}
-                    onChange={() => exibirSegundoSabor(state, setState)}
-                />
-
                 <div className='list-container'>
-                    {getSabores(state, setState)}
+                   {state}
                 </div>
             </div>
         </div>
     );
-}
-
-const exibirSegundoSabor = (state: any, setState: any) => {
-    setState({checked: !state.checked});
 }
 
 const setSabor = (state: any, sabor?: Sabor) => {
@@ -103,100 +82,31 @@ const setSabor = (state: any, sabor?: Sabor) => {
 }
 
 const getSabores = (state: any, setState: any) => {
-    if(state.checked) {
-        return (<div>
-            <div className="container-dois-sabores">
-                <div>
-                    <p>Primeiro sabor:</p>
-                    <FormControl component="fieldset">
-                        <List className="list-dois-sabores" component="nav">
-                            <Divider/>
-                            <RadioGroup 
-                                name="sabor1" 
-                                value={state.primeiroSabor} 
-                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                    setState({
-                                        checked: state.checked,
-                                        primeiroSabor: (event.target as HTMLInputElement).value,
-                                        segundoSabor: state.segundoSabor
-                                    });
-                                 }}>
-                                {database.sabores().map(sabor => {
-                                    return (
-                                        <>
-                                            <ListItem button>
-                                                <ListItemText primary={Sabor[sabor]} />
-                                                <ListItemIcon>
-                                                    <FormControlLabel value={Sabor[sabor]} control={<Radio />} label='' />
-                                                </ListItemIcon>
-                                            </ListItem>
-                                            <Divider />
-                                        </>
-                                    )})
-                                }
-                            </RadioGroup>
-                        </List>
-                    </FormControl>
-                </div>
-                <div>
-                    <p>Segundo sabor:</p>
-                    <FormControl component="fieldset">
-                        <List className="list-dois-sabores" component="nav">
-                            <Divider/>
-                            <RadioGroup 
-                                name="sabor2" 
-                                value={state.segundoSabor} 
-                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                    setState({
-                                        checked: state.checked,
-                                        primeiroSabor: state.primeiroSabor,
-                                        segundoSabor: (event.target as HTMLInputElement).value
-                                    });
-                                 }}>
-                                {database.sabores().map(sabor => {
-                                    return (
-                                        <>
-                                            <ListItem button>
-                                                <ListItemText primary={Sabor[sabor]} />
-                                                <ListItemIcon>
-                                                    <FormControlLabel value={Sabor[sabor]} control={<Radio />} label='' />
-                                                </ListItemIcon>
-                                            </ListItem>
-                                            <Divider />
-                                        </>
-                                    )})
-                                }
-                            </RadioGroup>
-                        </List>
-                    </FormControl>
-                </div>
-            </div>
-            <Link to="/confirmation">
-                <Button id="btnOrder" variant='outlined' onClick={() => {setSabor(state, undefined)}}>Confirmar e Pedir</Button>
-            </Link>
-        </div>);   
-    } else {
-        return (
+    database.sabores().then(sabores => {
+        setState(
             <List component="nav">
                 <Divider/>
-                {database.sabores().map(sabor => {
-                    return (
-                        <>
-                            <Link to="/confirmation">
-                                <ListItem onClick={() => setSabor(state, sabor)} button>
-                                    <ListItemText primary={Sabor[sabor]} />
-                                    <ListItemIcon>
-                                        <ArrowForward />
-                                    </ListItemIcon>
-                                </ListItem>
-                            </Link>
-                            <Divider />
-                        </>
-                    )})
+                {
+                    //@ts-ignore
+                    sabores.map(sabor => {
+                        return (
+                            <>
+                                <Link to="/confirmation">
+                                    <ListItem onClick={() => setSabor(state, sabor)} button>
+                                        <ListItemText primary={Sabor[sabor]} />
+                                        <ListItemIcon>
+                                            <ArrowForward />
+                                        </ListItemIcon>
+                                    </ListItem>
+                                </Link>
+                                <Divider />
+                            </>
+                        )
+                    })
                 }
             </List>
-        );
-    }
+        )
+    });
 }
 
 export default SelecionarSabor;

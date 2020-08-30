@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import './confirmation.css';
 import Button from '@material-ui/core/Button';
 import { IProps } from '../../App';
-import { Tamanho, Borda, RecheioBorda, SaborPizza, Sabor } from '../../MockBackend/models';
+import { Tamanho, RecheioBorda, SaborPizza, Sabor } from '../../MockBackend/models';
 
 const useStyles = makeStyles({
     outerDiv: {
@@ -18,7 +18,6 @@ const useStyles = makeStyles({
 
 function Confirmation(props: IProps) {
     const classes = useStyles();
-
     return (
         <div className={classes.outerDiv}>
             <div className="bg-img-confirmation"></div>
@@ -58,7 +57,7 @@ function Confirmation(props: IProps) {
                 </Button>
             </div>
         </div>
-    );
+    )
 }
 
 function getStringSabor(sabor: SaborPizza) {

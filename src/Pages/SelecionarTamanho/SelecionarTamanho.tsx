@@ -10,6 +10,7 @@ import { Tamanho } from '../../MockBackend/models';
 import Divider from '@material-ui/core/Divider';
 import { IProps } from '../../App';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import './selecionarTamanho.css';
 
@@ -24,6 +25,8 @@ var props: IProps;
 
 function SelecionarTamanho(_props: IProps) {
     const classes = useStyles();
+    let [state, setState] = useState(null);
+    getPizzaSizes(setState);
     props = _props;
     return (
         <div className={classes.outerDiv}>
@@ -36,7 +39,7 @@ function SelecionarTamanho(_props: IProps) {
                 <div className='list-container'>
                     <List component="nav">
                         <Divider />
-                        {getPizzaSizes()}
+                        {state}
                     </List>
                 </div>
             </div>
@@ -58,22 +61,27 @@ const setTamanho = (tamanho: Tamanho) => {
     props.setCurrentPizza(pizza);
 }
 
-const getPizzaSizes = () => {
-    return database.tamanhos().map(tamanho => {
-        return (<>
-            <Link to="/massa">
-                <ListItem onClick={() => setTamanho(tamanho)} button>
-                    <ListItemText primary={Tamanho[tamanho]} />
-                    <ListItemIcon>
-                        <ArrowForward />
-                    </ListItemIcon>
-                </ListItem>
-            </Link>
-            <Divider />
-        </>
+const getPizzaSizes = (setState: any) => {
+    database.tamanhos().then(tamanhos =>
+        setState(
+            //@ts-ignore
+            tamanhos.map(tamanho => {
+                return (<>
+                    <Link to="/massa">
+                        <ListItem onClick={() => setTamanho(tamanho)} button>
+                            <ListItemText primary={Tamanho[tamanho]} />
+                            <ListItemIcon>
+                                <ArrowForward />
+                            </ListItemIcon>
+                        </ListItem>
+                    </Link>
+                    <Divider />
+                </>
+                );
+            })
         )
-    });
-};
+    );
+}
 
 export default SelecionarTamanho;
 

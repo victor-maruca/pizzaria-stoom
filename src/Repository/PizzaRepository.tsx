@@ -1,44 +1,35 @@
-import { 
-    RecheiosBordaDisponíveis, 
-    SaboresDisponíveis, 
-    TamanhosDisponiveis, 
-} from '../MockBackend/data';
 import {
     Tamanho,
     Sabor,
-    RecheioBorda,
     Pizza
 } from '../MockBackend/models';
 
-const getTamanhosDisponiveis = (): Tamanho[]  => {
-    // Fake database access ...
-    return TamanhosDisponiveis;
+
+const getTamanhosDisponiveis = async() => {
+    return await fetch('http://127.0.0.1:8080/tamanhos')
+        .then(response => response.json());
+};
+
+const getRecheiosBordaDisponíveis = async() => {
+    return await fetch('http://127.0.0.1:8080/bordas')
+    .then(response => response.json());
 }
 
-const getRecheiosBordaDisponíveis = (): RecheioBorda[] => {
-    // Fake database access ...
-    return RecheiosBordaDisponíveis;
-}
-
-const getSaboresDisponiveis = (): Sabor[] => {
-    // Fake database access ...
-    return SaboresDisponíveis;
+const getSaboresDisponiveis = async() => {
+    return await fetch('http://127.0.0.1:8080/sabores')
+    .then(response => response.json());
 }
 
 const getRecomendation = (): Pizza => {
-    let bordas = getRecheiosBordaDisponíveis();
-    let sabores = getSaboresDisponiveis();
-    let tamanhos = getTamanhosDisponiveis();
     return {
-        borda: {
-            recheada: true,
-            recheioBorda: bordas[Math.floor(Math.random() * bordas.length)]
-        },
         sabor: {
             doisSabores: false,
-            primeiroSabor: sabores[Math.floor(Math.random() * sabores.length)]
+            primeiroSabor: Sabor.BACON
         },
-        tamanho: tamanhos[Math.floor(Math.random() * tamanhos.length)]
+        borda: {
+            recheada: false
+        },
+        tamanho: Tamanho.GRANDE
     }
 }
 

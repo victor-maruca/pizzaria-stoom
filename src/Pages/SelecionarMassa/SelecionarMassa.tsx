@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import { IProps } from '../../App';
 import { Link } from 'react-router-dom';
 import './selecionarMassa.css';
+import { useState } from 'react';
 
 const useStyles = makeStyles({
     outerDiv: {
@@ -23,6 +24,8 @@ var props: IProps;
 
 function SelecionarMassa(_props: IProps) {
     const classes = useStyles();
+    let [state, setState] = useState(null);
+    getBordas(setState);
     props = _props;
     return (
         <div className={classes.outerDiv}>
@@ -44,7 +47,7 @@ function SelecionarMassa(_props: IProps) {
                             </ListItem>
                         </Link>
                         <Divider />
-                        {getBordas()}
+                        {state}
                     </List>
                 </div>
             </div>
@@ -88,20 +91,25 @@ const setMassa = (borda?: RecheioBorda) => {
     props.setCurrentPizza(pizza);
 }
 
-const getBordas = () => {
-    return database.bordas().map(borda => {
-        return (
-            <>  
-                <Link to="/sabor">
-                    <ListItem onClick={() => setMassa(borda)} button>
-                        <ListItemIcon>
-                            <ArrowBack />
-                        </ListItemIcon>
-                        <ListItemText primary={RecheioBorda[borda]} />
-                    </ListItem>
-                </Link>
-                <Divider />
-            </>
+const getBordas = (setState: any) => {
+    database.bordas().then(bordas => {
+        setState(
+            //@ts-ignore
+            bordas.map(borda => {
+                return (
+                    <>  
+                        <Link to="/sabor">
+                            <ListItem onClick={() => setMassa(borda)} button>
+                                <ListItemIcon>
+                                    <ArrowBack />
+                                </ListItemIcon>
+                                <ListItemText primary={RecheioBorda[borda]} />
+                            </ListItem>
+                        </Link>
+                        <Divider />
+                    </>
+                )
+            })
         )
     });
 }
